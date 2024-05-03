@@ -1,6 +1,7 @@
 package dev.angelcruzl.springboot.testing.repository;
 
 import dev.angelcruzl.springboot.testing.model.Employee;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +18,23 @@ public class EmployeeRepositoryTests {
     @Autowired
     private EmployeeRepository employeeRepository;
 
-    // JUnit test fer save employee operation
-//    @DisplayName("JUnit test fer save employee operation")
-    @Test
-    public void givenEmployeeObject_whenSave_thenReturnSavedEmployee() {
+    private Employee employee;
 
-        // given - precondition or setup
-        Employee employee = Employee.builder()
+    @BeforeEach
+    public void setUp() {
+        employee = Employee.builder()
                 .firstName("Angel")
                 .lastName("Cruz")
                 .email("me@angelcruzl.dev")
                 .build();
+    }
+
+    // JUnit test fer save employee operation
+    @DisplayName("JUnit test fer save employee operation")
+    @Test
+    public void givenEmployeeObject_whenSave_thenReturnSavedEmployee() {
+
+        // given - precondition or setup
 
         // when - action or the behaviour that we are going test
         Employee savedEmployee = employeeRepository.save(employee);
@@ -41,19 +48,13 @@ public class EmployeeRepositoryTests {
     @Test
     public void givenEmployeesList_whenFindAll_thenEmployeesList() {
         // given - precondition or setup
-        Employee employee1 = Employee.builder()
-                .firstName("Angel")
-                .lastName("Cruz")
-                .email("me@angelcruzl.dev")
-                .build();
-
         Employee employee2 = Employee.builder()
                 .firstName("John")
                 .lastName("Doe")
                 .email("john@doe")
                 .build();
 
-        employeeRepository.save(employee1);
+        employeeRepository.save(employee);
         employeeRepository.save(employee2);
 
         // when - action or the behaviour that we are going test
@@ -69,11 +70,6 @@ public class EmployeeRepositoryTests {
     @Test
     public void givenEmployeeObject_whenFindById_thenReturnEmployeeObject() {
         // given - precondition or setup
-        Employee employee = Employee.builder()
-                .firstName("Angel")
-                .lastName("Cruz")
-                .email("me@angelcruzl.dev")
-                .build();
         employeeRepository.save(employee);
 
         // when - action or the behaviour that we are going test
@@ -88,11 +84,6 @@ public class EmployeeRepositoryTests {
     @Test
     public void givenEmployeeEmail_whenFindByEmail_thenReturnEmployeeObject() {
         // given - precondition or setup
-        Employee employee = Employee.builder()
-                .firstName("Angel")
-                .lastName("Cruz")
-                .email("me@angelcruzl.dev")
-                .build();
         employeeRepository.save(employee);
 
         // when - action or the behaviour that we are going test
@@ -106,11 +97,6 @@ public class EmployeeRepositoryTests {
     @Test
     public void givenEmployeeObject_whenUpdateEmployee_thenReturnUpdatedEmployee() {
         // given - precondition or setup
-        Employee employee = Employee.builder()
-                .firstName("Angel")
-                .lastName("Cruz")
-                .email("me@angelcruzl.dev")
-                .build();
         employeeRepository.save(employee);
 
         // when - action or the behaviour that we are going test
@@ -128,11 +114,6 @@ public class EmployeeRepositoryTests {
     @Test
     public void givenEmployeeObject_whenDelete_thenRemoveEmployee() {
         // given - precondition or setup
-        Employee employee = Employee.builder()
-                .firstName("Angel")
-                .lastName("Cruz")
-                .email("me@angelcruzl.dev")
-                .build();
         employeeRepository.save(employee);
 
         // when - action or the behaviour that we are going test
@@ -147,11 +128,6 @@ public class EmployeeRepositoryTests {
     @Test
     public void givenEmployeeFirstNameAndLastName_whenFindByJPQL_thenReturnEmployeeObject() {
         // given - precondition or setup
-        Employee employee = Employee.builder()
-                .firstName("Angel")
-                .lastName("Cruz")
-                .email("me@angelcruzl.dev")
-                .build();
         employeeRepository.save(employee);
 
         // when - action or the behaviour that we are going test
@@ -165,11 +141,6 @@ public class EmployeeRepositoryTests {
     @Test
     public void givenEmployeeFirstNameAndLastName_whenFindByJPQLNamedParams_thenReturnEmployeeObject() {
         // given - precondition or setup
-        Employee employee = Employee.builder()
-                .firstName("Angel")
-                .lastName("Cruz")
-                .email("me@angelcruzl.dev")
-                .build();
         employeeRepository.save(employee);
 
         // when - action or the behaviour that we are going test
@@ -183,11 +154,6 @@ public class EmployeeRepositoryTests {
     @Test
     public void givenEmployeeFirstNameAndLastName_whenFindByNativeQuery_thenReturnEmployeeObject() {
         // given - precondition or setup
-        Employee employee = Employee.builder()
-                .firstName("Angel")
-                .lastName("Cruz")
-                .email("me@angelcruzl.dev")
-                .build();
         employeeRepository.save(employee);
 
         // when - action or the behaviour that we are going test
@@ -201,11 +167,6 @@ public class EmployeeRepositoryTests {
     @Test
     public void givenEmployeeFirstNameAndLastName_whenFindByNativeQueryNamedParams_thenReturnEmployeeObject() {
         // given - precondition or setup
-        Employee employee = Employee.builder()
-                .firstName("Angel")
-                .lastName("Cruz")
-                .email("me@angelcruzl.dev")
-                .build();
         employeeRepository.save(employee);
 
         // when - action or the behaviour that we are going test
