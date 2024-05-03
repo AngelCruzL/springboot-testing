@@ -6,38 +6,45 @@ import dev.angelcruzl.springboot.testing.service.impl.EmployeeServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
-import static org.mockito.Mockito.mock;
+import static org.mockito.BDDMockito.given;
 
+@ExtendWith(MockitoExtension.class)
 public class EmployeeServiceTests {
+
+    @Mock
     private EmployeeRepository repository;
-    private EmployeeService service;
+
+    @InjectMocks
+    private EmployeeServiceImpl service;
+
+    private Employee employee;
 
     @BeforeEach
     public void setUp() {
-        repository = mock(EmployeeRepository.class);
-        service = new EmployeeServiceImpl(repository);
+        employee = Employee.builder()
+                .id(1L)
+                .firstName("Angel")
+                .lastName("Cruz")
+                .email("me@angelcruzl.dev")
+                .build();
     }
 
     @DisplayName("JUnit test for save employee operation")
     @Test
     public void givenEmployeeObject_whenSaveEmployee_thenReturnEmployeeObject() {
         // given - precondition or setup
-        Employee employee = Employee.builder()
-                .id(1L)
-                .firstName("Angel")
-                .lastName("Cruz")
-                .email("me@angelcruzl.dev")
-                .build();
-
-        BDDMockito.given(repository.findByEmail(employee.getEmail()))
+        given(repository.findByEmail(employee.getEmail()))
                 .willReturn(Optional.empty());
 
-        BDDMockito.given(repository.save(employee))
+        given(repository.save(employee))
                 .willReturn(employee);
 
         // when - action or the behaviour that we are going test
