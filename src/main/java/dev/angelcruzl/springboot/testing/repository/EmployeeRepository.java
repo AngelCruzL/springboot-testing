@@ -15,4 +15,8 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
     @Query("SELECT e FROM Employee e WHERE e.firstName = :firstName AND e.lastName = :lastName")
     Employee findByJPQLNamedParams(@Param("firstName") String firstName, @Param("lastName") String lastName);
+
+    @Query(value = "SELECT * FROM employees WHERE first_name = ?1 AND last_name = ?2", nativeQuery = true)
+    Employee findByNativeQuery(String firstName, String lastName);
+    
 }

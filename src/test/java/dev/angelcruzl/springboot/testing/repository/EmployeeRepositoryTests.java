@@ -179,4 +179,23 @@ public class EmployeeRepositoryTests {
         assertThat(employeeDb).isNotNull();
     }
 
+    @DisplayName("JUnit test for get employee by first name and last name operation using native query")
+    @Test
+    public void givenEmployeeFirstNameAndLastName_whenFindByNativeQuery_thenReturnEmployeeObject() {
+        // given - precondition or setup
+        Employee employee = Employee.builder()
+                .firstName("Angel")
+                .lastName("Cruz")
+                .email("me@angelcruzl.dev")
+                .build();
+        employeeRepository.save(employee);
+
+        // when - action or the behaviour that we are going test
+        Employee employeeDb = employeeRepository.findByNativeQuery(employee.getFirstName(), employee.getLastName());
+
+        // then - verify the output
+        assertThat(employeeDb).isNotNull();
+    }
+
+
 }
