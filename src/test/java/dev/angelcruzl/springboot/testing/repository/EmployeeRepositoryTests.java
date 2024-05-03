@@ -64,4 +64,23 @@ public class EmployeeRepositoryTests {
 
     }
 
+    @DisplayName("JUnit test for get employee by email operation")
+    @Test
+    public void givenEmployeeObject_whenFindById_thenReturnEmployeeObject() {
+        // given - precondition or setup
+        Employee employee = Employee.builder()
+                .firstName("Angel")
+                .lastName("Cruz")
+                .email("me@angelcruzl.dev")
+                .build();
+        employeeRepository.save(employee);
+
+        // when - action or the behaviour that we are going test
+        Employee employeeDb = employeeRepository.findById(employee.getId()).get();
+
+        // then - verify the output
+        assertThat(employeeDb).isNotNull();
+
+    }
+
 }
