@@ -4,7 +4,6 @@ import dev.angelcruzl.springboot.testing.exception.ResourceNotFoundException;
 import dev.angelcruzl.springboot.testing.model.Employee;
 import dev.angelcruzl.springboot.testing.repository.EmployeeRepository;
 import dev.angelcruzl.springboot.testing.service.EmployeeService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -12,8 +11,11 @@ import java.util.Optional;
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-    @Autowired
-    private EmployeeRepository employeeRepository;
+    private final EmployeeRepository employeeRepository;
+
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository) {
+        this.employeeRepository = employeeRepository;
+    }
 
     @Override
     public Employee saveEmployee(Employee employee) {
