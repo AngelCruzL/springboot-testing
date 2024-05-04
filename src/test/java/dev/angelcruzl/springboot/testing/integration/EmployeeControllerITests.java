@@ -177,4 +177,23 @@ public class EmployeeControllerITests {
                 .andDo(print());
     }
 
+    @Test
+    public void givenEmployeeId_whenDeleteEmployee_thenReturnSuccessMessage() throws Exception {
+        // given - precondition or setup
+        Employee employee = Employee.builder()
+                .firstName("Angel")
+                .lastName("Cruz")
+                .email("me@angelcruzl.dev")
+                .build();
+
+        repository.save(employee);
+
+        // when - action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(delete("/api/v1/employees/{id}", employee.getId()));
+
+        // then - verify the result or output
+        response.andExpect(status().isOk())
+                .andExpect(jsonPath("$", is("Employee with id " + employee.getId() + " deleted successfully")));
+    }
+
 }
