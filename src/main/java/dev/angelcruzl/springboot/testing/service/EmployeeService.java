@@ -13,4 +13,6 @@ public interface EmployeeService {
     Optional<Employee> getEmployeeById(Long id);
 
     Employee updateEmployee(Employee updatedEmployee);
+
+    void deleteEmployee(Long id);
 }

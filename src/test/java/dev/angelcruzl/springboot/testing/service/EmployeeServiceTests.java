@@ -20,8 +20,7 @@ import java.util.Optional;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 public class EmployeeServiceTests {
@@ -152,6 +151,32 @@ public class EmployeeServiceTests {
 
         // then - verify the output
         verify(repository, never()).save(any(Employee.class));
+    }
+
+    @DisplayName("JUnit test for delete employee operation")
+    @Test
+    public void givenEmployeeId_whenDeleteEmployee_thenVerifyDeleteMethodIsCalled() {
+        // given - precondition or setup
+        given(repository.findById(employee.getId())).willReturn(Optional.of(employee));
+
+        // when - action or the behaviour that we are going test
+        service.deleteEmployee(employee.getId());
+
+        // then - verify the output
+        verify(repository, times(1)).deleteById(employee.getId());
+    }
+
+    @DisplayName("JUnit test for delete employee operation when employee does not exist")
+    @Test
+    public void givenEmployeeId_whenDeleteEmployee_thenThrowResourceNotFoundException() {
+        // given - precondition or setup
+        given(repository.findById(employee.getId())).willReturn(Optional.empty());
+
+        // when - action or the behaviour that we are going test
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> service.deleteEmployee(employee.getId()));
+
+        // then - verify the output
+        verify(repository, never()).deleteById(employee.getId());
     }
 
 }

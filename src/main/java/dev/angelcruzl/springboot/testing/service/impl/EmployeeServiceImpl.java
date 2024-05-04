@@ -45,4 +45,14 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         return employeeRepository.save(updatedEmployee);
     }
+
+    @Override
+    public void deleteEmployee(Long id) {
+        Optional<Employee> employee = employeeRepository.findById(id);
+        if (employee.isEmpty()) {
+            throw new ResourceNotFoundException("Employee with id " + id + " not found");
+        }
+
+        employeeRepository.deleteById(id);
+    }
 }
