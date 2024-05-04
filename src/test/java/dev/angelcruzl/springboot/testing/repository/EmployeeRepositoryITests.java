@@ -1,5 +1,6 @@
 package dev.angelcruzl.springboot.testing.repository;
 
+import dev.angelcruzl.springboot.testing.integration.AbstractionContainerBaseTest;
 import dev.angelcruzl.springboot.testing.model.Employee;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -15,7 +16,7 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
-public class EmployeeRepositoryITests {
+public class EmployeeRepositoryITests extends AbstractionContainerBaseTest {
 
     @Autowired
     private EmployeeRepository employeeRepository;
