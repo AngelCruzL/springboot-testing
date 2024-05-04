@@ -13,6 +13,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -70,6 +72,41 @@ public class EmployeeServiceTests {
 
         // then - verify the output
         verify(repository, never()).save(any(Employee.class));
+    }
+
+    @DisplayName("JUnit test for get all employees operation")
+    @Test
+    public void givenEmployeesList_whenGetAllEmployees_thenReturnEmployeesList() {
+        // given - precondition or setup
+        Employee employee2 = Employee.builder()
+                .id(2L)
+                .firstName("John")
+                .lastName("Doe")
+                .email("john@doe")
+                .build();
+        given(repository.findAll()).willReturn(List.of(employee, employee2));
+
+        // when - action or the behaviour that we are going test
+        List<Employee> employeeList = service.getAllEmployees();
+
+        // then - verify the output
+        assertThat(employeeList).isNotNull();
+        assertThat(employeeList.size()).isEqualTo(2);
+    }
+
+    @DisplayName("JUnit test for get all employees operation when no employees")
+    @Test
+    public void givenNoEmployees_whenGetAllEmployees_thenReturnEmptyList() {
+        // given - precondition or setup
+        given(repository.findAll()).willReturn(List.of());
+        given(repository.findAll()).willReturn(Collections.emptyList());
+
+        // when - action or the behaviour that we are going test
+        List<Employee> employeeList = service.getAllEmployees();
+
+        // then - verify the output
+        assertThat(employeeList).isNotNull();
+        assertThat(employeeList.size()).isEqualTo(0);
     }
 
 }
