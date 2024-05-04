@@ -13,8 +13,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
 @WebMvcTest(EmployeeController.class)
@@ -52,4 +57,31 @@ public class EmployeeControllerTests {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.lastName", CoreMatchers.is(employee.getLastName())))
                 .andExpect(MockMvcResultMatchers.jsonPath("$.email", CoreMatchers.is(employee.getEmail())));
     }
+
+    @Test
+    public void givenListOfEmployees_whenGetAllEmployees_thenReturnEmployeesList() throws Exception {
+        // given - precondition or setup
+        List<Employee> listOfEmployees = new ArrayList<>();
+        listOfEmployees.add(Employee.builder()
+                .firstName("Angel")
+                .lastName("Cruz")
+                .email("me@angelcruzl.dev")
+                .build());
+        listOfEmployees.add(Employee.builder()
+                .firstName("John")
+                .lastName("Doe")
+                .email("john@doe")
+                .build());
+
+        BDDMockito.given(service.getAllEmployees()).willReturn(listOfEmployees);
+
+        // when - action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/api/v1/employees"));
+
+        // then - verify the result or output using assert statements
+        response.andExpect(MockMvcResultMatchers.status().isOk())
+                .andDo(MockMvcResultHandlers.print())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.size()", CoreMatchers.is(listOfEmployees.size())));
+    }
+
 }
