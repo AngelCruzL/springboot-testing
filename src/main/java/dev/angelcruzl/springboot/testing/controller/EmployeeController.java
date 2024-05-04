@@ -4,6 +4,7 @@ import dev.angelcruzl.springboot.testing.model.Employee;
 import dev.angelcruzl.springboot.testing.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -24,5 +25,12 @@ public class EmployeeController {
     @GetMapping
     public List<Employee> getAllEmployees() {
         return service.getAllEmployees();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<Employee> getEmployeeById(@PathVariable("id") long employeeId) {
+        return service.getEmployeeById(employeeId)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }
