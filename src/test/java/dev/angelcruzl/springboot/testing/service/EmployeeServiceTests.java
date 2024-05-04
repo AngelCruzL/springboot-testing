@@ -122,4 +122,36 @@ public class EmployeeServiceTests {
         assertThat(employeeDb).isNotNull();
     }
 
+    @DisplayName("JUnit test for update employee operation")
+    @Test
+    public void givenEmployeeObject_whenUpdateEmployee_thenReturnUpdatedEmployeeObject() {
+        // given - precondition or setup
+        given(repository.findById(employee.getId())).willReturn(Optional.of(employee));
+        given(repository.save(employee)).willReturn(employee);
+        employee.setFirstName("Luis");
+        employee.setLastName("Lara");
+
+        // when - action or the behaviour that we are going test
+        Employee updatedEmployee = service.updateEmployee(employee);
+
+        // then - verify the output
+        assertThat(updatedEmployee.getFirstName()).isEqualTo("Luis");
+        assertThat(updatedEmployee.getLastName()).isEqualTo("Lara");
+    }
+
+    @DisplayName("JUnit test for update employee operation when employee does not exist")
+    @Test
+    public void givenEmployeeObject_whenUpdateEmployee_thenThrowResourceNotFoundException() {
+        // given - precondition or setup
+        given(repository.findById(employee.getId())).willReturn(Optional.empty());
+
+        // when - action or the behaviour that we are going test
+        Assertions.assertThrows(ResourceNotFoundException.class, () -> {
+            service.updateEmployee(employee);
+        });
+
+        // then - verify the output
+        verify(repository, never()).save(any(Employee.class));
+    }
+
 }
