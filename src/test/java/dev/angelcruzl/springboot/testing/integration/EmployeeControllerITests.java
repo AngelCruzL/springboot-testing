@@ -86,4 +86,45 @@ public class EmployeeControllerITests {
                 .andExpect(jsonPath("$.size()", is(listOfEmployees.size())));
     }
 
+    @Test
+    public void givenEmployeeId_whenGetEmployeeById_thenReturnEmployeeObject() throws Exception {
+        // given - precondition or setup
+        Employee employee = Employee.builder()
+                .firstName("Angel")
+                .lastName("Cruz")
+                .email("me@angelcruzl.dev")
+                .build();
+        repository.save(employee);
+
+        // when - action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/api/v1/employees/{id}", employee.getId()));
+
+        // then - verify the result or output using assert statements
+        response.andExpect(status().isOk())
+                .andDo(print())
+                .andExpect(jsonPath("$.id", is(employee.getId().intValue())))
+                .andExpect(jsonPath("$.firstName", is(employee.getFirstName())))
+                .andExpect(jsonPath("$.lastName", is(employee.getLastName())))
+                .andExpect(jsonPath("$.email", is(employee.getEmail())));
+    }
+
+    @Test
+    public void givenEmployeeId_whenGetEmployeeById_thenReturnEmpty() throws Exception {
+        // given - precondition or setup
+        long employeeId = 1L;
+        Employee employee = Employee.builder()
+                .firstName("Angel")
+                .lastName("Cruz")
+                .email("me@angelcruzl.dev")
+                .build();
+        repository.save(employee);
+
+        // when - action or the behaviour that we are going test
+        ResultActions response = mockMvc.perform(get("/api/v1/employees/{id}", employeeId));
+
+        // then - verify the result or output using assert statements
+        response.andExpect(status().isNotFound())
+                .andDo(print());
+    }
+
 }
